@@ -1,12 +1,12 @@
 on:
   workflow_dispatch:
 
-name: Release to DockerHub
+name: Release new version
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    name: Create release
+    name: Release to DockerHub
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -35,18 +35,18 @@ jobs:
         env:
           WITH_V: true
 
-      - name: Publish
-        run: ./gradlew jib
+      - name: Get new tag
+        id: previoustag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: 1.0.0
 
       - name: Build changelog
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v1
 
-      - name: Get tag
-        id: previoustag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-        with:
-          fallback: 1.0.0
+      - name: Publish
+        run: ./gradlew jib
 
       - name: Create release
         uses: actions/create-release@v1
