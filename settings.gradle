@@ -1,0 +1,4 @@
+rootProject.name = 'autotools'
+
+include 'autotools-core'
+include 'autotools-ui'
