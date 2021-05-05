@@ -1,9 +1,5 @@
 # Files
 
-[![Build Java](https://github.com/peavers/autotools/actions/workflows/build-java.yml/badge.svg)](https://github.com/peavers/autotools/actions/workflows/build-java.yml)
-[![Build Typescript](https://github.com/peavers/autotools/actions/workflows/build-typescript.yml/badge.svg)](https://github.com/peavers/autotools/actions/workflows/build-typescript.yml)
-[![Release](https://github.com/peavers/autotools/actions/workflows/release.yml/badge.svg)](https://github.com/peavers/autotools/actions/workflows/release.yml)
-
 A very simple set of autotools for managing files and stuff
 
 ## Getting started
