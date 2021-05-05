@@ -1,0 +1,152 @@
+<div class="level">
+  <div class="level-left">
+    <span class="mat-headline is-marginless">Rules</span>
+  </div>
+  <div class="level-right">
+    <mat-slide-toggle labelPosition="after" [(ngModel)]="scheduledJob.enabled">Enable</mat-slide-toggle>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <div class="columns is-multiline">
+    <div class="column is-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="scheduledJob.name" autocomplete="off" />
+        <mat-hint>Display name of the profile.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Rule type</mat-label>
+        <mat-select [(ngModel)]="scheduledJob.jobType" [(value)]="scheduledJob.jobType">
+          <mat-option *ngFor="let job of jobs" [value]="job.type">
+            {{ job.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>The base operation of this rule. Cannot be changed once created.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Delay between runs</mat-label>
+        <mat-select [(ngModel)]="scheduledJob.delay" [(value)]="scheduledJob.delay" (valueChange)="onCustom($event)">
+          <mat-option *ngFor="let delay of delays" [value]="delay.value">
+            {{ delay.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Time since the rule last executed and starts again.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="column" *ngIf="customDelay">
+      <mat-form-field appearance="outline">
+        <mat-label>Custom</mat-label>
+        <input matInput autocomplete="off" [(ngModel)]="scheduledJob.delay" />
+        <mat-hint>Time unit is milliseconds.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Ignore files with these words</mat-label>
+        <input matInput [(ngModel)]="scheduledJob.ignoreWords" />
+        <mat-hint>Comma separated list. Leave blank for no ignore values.</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Delete Files by size-->
+  <div *ngIf="scheduledJob.jobType == 'DELETE_FILES_BY_SIZE'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Directory where files will be deleted from (recursive function)</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Size in bytes to delete (1 megabyte is ~1000000 bytes)</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.lessThanThreshold" />
+      <mat-hint>Files less than this size will be deleted</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Delete Files by name -->
+  <div *ngIf="scheduledJob.jobType == 'DELETE_FILES_BY_NAME'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Directory where files will be deleted from (recursive function)</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Delete any files with this word in their name</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.deleteByName" />
+      <mat-hint>Only checks filename, not full path.</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Delete Directories -->
+  <div *ngIf="scheduledJob.jobType == 'DELETE_EMPTY_DIRECTORIES'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Directory where empty directories will be deleted from (recursive function)</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Copy Media -->
+  <div *ngIf="scheduledJob.jobType == 'COPY_MEDIA_FILES'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Where the files currently are</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Target directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.targetDirectory" />
+      <mat-hint>Where you want the files copied to</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Duplicate Media Advance -->
+  <div *ngIf="scheduledJob.jobType == 'DUPLICATE_MEDIA_ADVANCE'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Where to scan for duplicates</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Duplicate Media Basic -->
+  <div *ngIf="scheduledJob.jobType == 'DUPLICATE_MEDIA_BASIC'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Where to scan for duplicates</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <!-- Unrar files -->
+  <div *ngIf="scheduledJob.jobType == 'UNRAR_FILES'">
+    <mat-form-field appearance="outline">
+      <mat-label>Source directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.sourceDirectory" />
+      <mat-hint>Where the files currently are</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Target directory</mat-label>
+      <input matInput autocomplete="off" [(ngModel)]="scheduledJob.targetDirectory" />
+      <mat-hint>Where you want the files copied to</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="scheduledJob" color="primary">Save</button>
+  </div>
+</div>
