@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: autotools
+  datasource:
+    url: jdbc:h2:file:./.data/db
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update

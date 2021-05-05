@@ -1,0 +1,66 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'com.google.cloud.tools.jib'
+apply plugin: 'com.palantir.git-version'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.microstream.one/repository/maven-public' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation project(':autotools-ui')
+
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Apache
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'commons-io:commons-io:2.8.0'
+
+    // Google
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+    // Other
+    implementation 'one.util:streamex:0.7.3'
+
+    // Tests
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+
+    // Dev
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation "org.jcodec:jcodec:0.2.5"
+    implementation "org.jcodec:jcodec-javase:0.2.5"
+    implementation "net.coobird:thumbnailator:0.4.14"
+    implementation 'com.github.wendykierp:JTransforms:3.1'
+    implementation "com.github.junrar:junrar:7.4.0"
+
+    // Database
+    runtimeOnly 'com.h2database:h2'
+}
+
+jib {
+    from {
+        image = 'adoptopenjdk/openjdk15:jdk-15.0.2_7-alpine'
+    }
+    to {
+        image = 'peavers/autotools'
+        auth {
+            username = System.getenv("DOCKER_USER")
+            password = System.getenv("DOCKER_PASS")
+        }
+        tags = ["latest", gitVersion()]
+    }
+    container {
+        jvmFlags = ['-XX:+UseContainerSupport']
+        labels = [maintainer: 'Chris Turner<chris@codacy.com>']
+    }
+}

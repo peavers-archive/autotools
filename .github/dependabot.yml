@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/.github"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 99
+
+  - package-ecosystem: gradle
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 99
+    ignore:
+      - dependency-name: "com.sun.xml.bind:*"
+
+  - package-ecosystem: npm
+    directory: "/autotools-frontend"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 99

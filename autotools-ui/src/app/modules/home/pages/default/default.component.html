@@ -1,0 +1,63 @@
+<div class="section">
+  <div class="container is-fluid">
+    <div class="columns is-multiline">
+      <h1 class="mat-title">Rules</h1>
+
+      <div class="column is-12">
+        <table mat-table [dataSource]="dataSource" matSort class="flat-card">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
+            <td class="is-editable" mat-cell *matCellDef="let element" (click)="editRule(element)">
+              {{ element.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Type</th>
+            <td class="is-editable" mat-cell *matCellDef="let element" (click)="editRule(element)">
+              {{ element.jobType }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="source">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Source</th>
+            <td class="is-editable" mat-cell *matCellDef="let element" (click)="editRule(element)">
+              {{ element.sourceDirectory }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="target">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Target</th>
+            <td class="is-editable" mat-cell *matCellDef="let element" (click)="editRule(element)">
+              {{ element.targetDirectory }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="enabled">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Enabled</th>
+            <td class="is-editable" mat-cell *matCellDef="let element" (click)="editRule(element)">
+              {{ element.enabled }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button class="is-pulled-right" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="deleteRule(element)">Delete</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-action-button (clickedEvent)="addJob()" [tooltip]="'Add rule'"></app-action-button>
