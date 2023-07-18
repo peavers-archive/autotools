@@ -39,7 +39,7 @@ dependencies {
 
     implementation "org.jcodec:jcodec:0.2.5"
     implementation "org.jcodec:jcodec-javase:0.2.5"
-    implementation "net.coobird:thumbnailator:0.4.14"
+    implementation "net.coobird:thumbnailator:0.4.20"
     implementation 'com.github.wendykierp:JTransforms:3.1'
     implementation "com.github.junrar:junrar:7.4.0"
 
