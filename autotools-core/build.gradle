@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-jre'
 
     // Other
-    implementation 'one.util:streamex:0.7.3'
+    implementation 'one.util:streamex:0.8.2'
 
     // Tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
